@@ -1,0 +1,1 @@
+<strong>Copyright &copy; <?php echo date('Y'); ?> <a target='_BLANK' href="https://ntc.co.id/recruitment"> PT. Nusa Toyotetsu</a>.</strong> All rights reserved.
