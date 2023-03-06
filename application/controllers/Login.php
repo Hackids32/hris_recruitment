@@ -7,7 +7,7 @@ class Login extends CI_Controller
         if (isset($_POST['submit'])) {
             $username = $this->input->post('a');
             $password = md5($this->input->post('b'));
-            $cek = $this->model_users->cek_login($username, $password);
+            $cek = $this->model_users->cek_login_employee($username, $password);
             $row = $cek->row_array();
             $total = $cek->num_rows();
             if ($total > 0) {

@@ -1,9 +1,14 @@
 <?php
 class Model_users extends CI_model
 {
-    function cek_login($username, $password)
+    function cek_login_employee($username, $password)
     {
-        return $this->db->query("SELECT * FROM users where username='" . $this->db->escape_str($username) . "' AND password='" . $this->db->escape_str($password) . "'");
+        return $this->db->query("SELECT * FROM users where username='" . $this->db->escape_str($username) . "' AND password='" . $this->db->escape_str($password) . "' AND blokir = 'Y' AND level = 'user'");
+    }
+
+    function cek_login_admin($username, $password)
+    {
+        return $this->db->query("SELECT * FROM users where username='" . $this->db->escape_str($username) . "' AND password='" . $this->db->escape_str($password) . "' AND blokir = 'Y' AND level = 'admin'");
     }
 
     function users()
