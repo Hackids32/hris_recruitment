@@ -2,7 +2,7 @@
               <div class="box">
                 <div class="box-header">
                   <h3 class="box-title">Department</h3>
-                  <a class='pull-right btn btn-primary btn-sm' href='<?php echo base_url(); ?>administrator/tambah_department'>Tambahkan Data</a>
+                  <a class='pull-right btn btn-primary btn-sm' href='<?php echo base_url(); ?>administrator/tambah_department'><span class='glyphicon glyphicon-plus'></span></a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="example1" class="table table-bordered table-striped">

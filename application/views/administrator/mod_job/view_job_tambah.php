@@ -20,14 +20,14 @@ foreach ($record->result_array() as $row) {
   echo "<option value='$row[id_kategori]'>$row[nama_kategori]</option>";
 }
 echo "</td></tr>
-                    <tr><th scope='row'>Isi Berita</th>             <td><textarea id='editor1' class='form-control' name='d' style='height:320px' required></textarea></td></tr>
+                    <tr><th scope='row'>Konten</th>             <td><textarea id='editor1' class='form-control' name='d' style='height:320px' required></textarea></td></tr>
                     <tr><th scope='row'>Gambar</th>                 <td><input type='file' class='form-control' name='e'></td></tr>
                   </tbody>
                   </table>
                 </div>
               </div>
               <div class='box-footer'>
-                    <button type='submit' name='submit' class='btn btn-info'>Tambahkan</button>
+                    <button type='submit' name='submit' class='btn btn-primary'>Tambahkan</button>
                     <a href='" . base_url() . $this->uri->segment(1) . "/berita'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
                     
                   </div>

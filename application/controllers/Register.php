@@ -37,10 +37,6 @@ class Register extends CI_Controller
             $newKode  = $SMA . $lastKode;
             // End of code
 
-            $this->load->model('Model_users', 'model_users');
-            $simpan = $this->model_users->users_tambah();
-            $this->session->set_flashdata('status', 'Segera aktivasi akun anda melalui link yang sudah dikirim ke email anda');
-
             // Send email verification
             $response = false;
             $mail = new PHPMailer();
@@ -79,12 +75,18 @@ class Register extends CI_Controller
 
             // Send email
             if (!$mail->send()) {
-                echo 'Message could not be sent.';
-                echo 'Mailer Error: ' . $mail->ErrorInfo;
+                //echo 'Message could not be sent.';
+                //echo 'Mailer Error: ' . $mail->ErrorInfo;
+                $this->session->set_flashdata('status', 'Maaf registrasi anda gagal, silahkan coba lagi');
+                redirect('login', 'refresh');
             } else {
                 //echo 'Message has been sent';
+                $this->load->model('Model_users', 'model_users');
+                $simpan = $this->model_users->users_tambah();
+                $this->session->set_flashdata('status', 'Segera aktivasi akun anda melalui link yang sudah dikirim ke email anda');
+                redirect('login', 'refresh');
             }
-            redirect('login', 'refresh');
+            
         } else {
             $data['title'] = 'Candidate &rsaquo; Sign Up';
             $this->load->view('register/view_login', $data);

@@ -34,7 +34,14 @@ class Administrator extends CI_Controller
 	function home()
 	{
 		cek_session_admin();
-		$this->template->load('administrator/template', 'administrator/view_home');
+        if($this->session->level=='admin')
+        {
+            $this->template->load('administrator/template', 'administrator/view_home');
+        }
+        else
+        {
+            redirect('login/home');
+        }
 	}
 
 	function identitaswebsite()
@@ -214,8 +221,6 @@ class Administrator extends CI_Controller
 		redirect('administrator/halamanbaru');
 	}
 
-
-
 	// Controller Modul List Berita
 
 	function cepat_berita()
@@ -270,37 +275,6 @@ class Administrator extends CI_Controller
 		$this->model_berita->list_berita_delete($id);
 		redirect('administrator/job');
 	}
-
-
-	// Controller Modul Komentar Berita
-
-	function komentar()
-	{
-		cek_session_admin();
-		$data['record'] = $this->model_berita->komentar();
-		$this->template->load('administrator/template', 'administrator/mod_komentar/view_komentar', $data);
-	}
-
-	function edit_komentar()
-	{
-		cek_session_admin();
-		$id = $this->uri->segment(3);
-		if (isset($_POST['submit'])) {
-			$this->model_berita->komentar_update();
-			redirect('administrator/komentar');
-		} else {
-			$data['rows'] = $this->model_berita->komentar_edit($id)->row_array();
-			$this->template->load('administrator/template', 'administrator/mod_komentar/view_komentar_edit', $data);
-		}
-	}
-
-	function delete_komentar()
-	{
-		$id = $this->uri->segment(3);
-		$this->model_berita->komentar_delete($id);
-		redirect('administrator/komentar');
-	}
-
 
 	// Controller Modul nama dept
 
@@ -567,15 +541,22 @@ class Administrator extends CI_Controller
 	function edit_manajemenuser()
 	{
 		cek_session_admin();
-		$id = $this->uri->segment(3);
-		if (isset($_POST['submit'])) {
-			$this->model_users->users_update();
-			redirect('administrator/manajemenuser');
-		} else {
-			$data['mo'] = $this->model_modul->users_modul();
-			$data['rows'] = $this->model_users->users_edit($id)->row_array();
-			$this->template->load('administrator/template', 'administrator/mod_users/view_users_edit', $data);
-		}
+		if($this->session->level=='admin')
+        {
+            $id = $this->uri->segment(3);
+			if (isset($_POST['submit'])) {
+				$this->model_users->users_update();
+				redirect('administrator/manajemenuser');
+			} else {
+				$data['mo'] = $this->model_modul->users_modul();
+				$data['rows'] = $this->model_users->users_edit($id)->row_array();
+				$this->template->load('administrator/template', 'administrator/mod_users/view_users_edit', $data);
+			}
+        }
+        else
+        {
+            redirect('login/home');
+        }
 	}
 
 	function delete_manajemenuser()
@@ -583,48 +564,6 @@ class Administrator extends CI_Controller
 		$id = $this->uri->segment(3);
 		$this->model_users->users_delete($id);
 		redirect('administrator/manajemenuser');
-	}
-
-
-
-
-	// Controller Modul Modul
-	function manajemenmodul()
-	{
-		cek_session_admin();
-		$data['record'] = $this->model_modul->modul();
-		$this->template->load('administrator/template', 'administrator/mod_modul/view_modul', $data);
-	}
-
-	function tambah_manajemenmodul()
-	{
-		cek_session_admin();
-		if (isset($_POST['submit'])) {
-			$this->model_modul->modul_tambah();
-			redirect('administrator/manajemenmodul');
-		} else {
-			$this->template->load('administrator/template', 'administrator/mod_modul/view_modul_tambah');
-		}
-	}
-
-	function edit_manajemenmodul()
-	{
-		cek_session_admin();
-		$id = $this->uri->segment(3);
-		if (isset($_POST['submit'])) {
-			$this->model_modul->modul_update();
-			redirect('administrator/manajemenmodul');
-		} else {
-			$data['rows'] = $this->model_modul->modul_edit($id)->row_array();
-			$this->template->load('administrator/template', 'administrator/mod_modul/view_modul_edit', $data);
-		}
-	}
-
-	function delete_manajemenmodul()
-	{
-		$id = $this->uri->segment(3);
-		$this->model_modul->modul_delete($id);
-		redirect('administrator/manajemenmodul');
 	}
 
 	function logout()
@@ -715,49 +654,6 @@ class Administrator extends CI_Controller
 		redirect('administrator/polling');
 	}
 
-
-
-	// Controller Modul Sekilas Info
-
-	function sekilasinfo()
-	{
-		cek_session_admin();
-		$data['record'] = $this->model_sekilasinfo->sekilasinfo();
-		$this->template->load('administrator/template', 'administrator/mod_sekilasinfo/view_sekilasinfo', $data);
-	}
-
-	function tambah_sekilasinfo()
-	{
-		cek_session_admin();
-		if (isset($_POST['submit'])) {
-			$this->model_sekilasinfo->sekilasinfo_tambah();
-			redirect('administrator/sekilasinfo');
-		} else {
-			$this->template->load('administrator/template', 'administrator/mod_sekilasinfo/view_sekilasinfo_tambah');
-		}
-	}
-
-	function edit_sekilasinfo()
-	{
-		cek_session_admin();
-		$id = $this->uri->segment(3);
-		if (isset($_POST['submit'])) {
-			$this->model_sekilasinfo->sekilasinfo_update();
-			redirect('administrator/sekilasinfo');
-		} else {
-			$data['rows'] = $this->model_sekilasinfo->sekilasinfo_edit($id)->row_array();
-			$this->template->load('administrator/template', 'administrator/mod_sekilasinfo/view_sekilasinfo_edit', $data);
-		}
-	}
-
-	function delete_sekilasinfo()
-	{
-		$id = $this->uri->segment(3);
-		$this->model_sekilasinfo->sekilasinfo_delete($id);
-		redirect('administrator/sekilasinfo');
-	}
-
-
 	// Controller Modul Link Terkait
 
 	function linkterkait()
@@ -797,38 +693,6 @@ class Administrator extends CI_Controller
 		$this->model_linkterkait->linkterkait_delete($id);
 		redirect('administrator/linkterkait');
 	}
-
-
-
-	// Controller Modul shoutbox
-
-	function shoutbox()
-	{
-		cek_session_admin();
-		$data['record'] = $this->model_shoutbox->shoutbox();
-		$this->template->load('administrator/template', 'administrator/mod_shoutbox/view_shoutbox', $data);
-	}
-
-	function edit_shoutbox()
-	{
-		cek_session_admin();
-		$id = $this->uri->segment(3);
-		if (isset($_POST['submit'])) {
-			$this->model_shoutbox->shoutbox_update();
-			redirect('administrator/shoutbox');
-		} else {
-			$data['rows'] = $this->model_shoutbox->shoutbox_edit($id)->row_array();
-			$this->template->load('administrator/template', 'administrator/mod_shoutbox/view_shoutbox_edit', $data);
-		}
-	}
-
-	function delete_shoutbox()
-	{
-		$id = $this->uri->segment(3);
-		$this->model_shoutbox->shoutbox_delete($id);
-		redirect('administrator/shoutbox');
-	}
-
 
 	// Controller Modul Album
 

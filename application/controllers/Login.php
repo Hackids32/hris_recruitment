@@ -34,7 +34,14 @@ class Login extends CI_Controller
     function home()
     {
         cek_session_admin();
-        $this->template->load('login/template', 'login/view_home');
+        if($this->session->level=='user')
+        {
+            $this->template->load('login/template', 'login/view_home');
+        }
+        else
+        {
+            redirect('administrator/home');
+        }
     }
 
     function identitaswebsite()
@@ -61,7 +68,7 @@ class Login extends CI_Controller
     {
         cek_session_admin();
         $id = $this->uri->segment(3);
-        $data['record'] = $this->model_berita->joblist_detail($id)->row_array();
+        $data['record'] = $this->model_berita->list_berita_edit($id)->row_array();
         $this->template->load('login/template', 'login/mod_joblist/view_joblist_edit', $data);
     }
 
@@ -105,473 +112,6 @@ class Login extends CI_Controller
         redirect('administrator/pegawai');
     }
 
-    // Controller Modul Menu Utama
-
-    function menuutama()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_menu->menuutama();
-        $this->template->load('administrator/template', 'administrator/mod_menu/view_menu', $data);
-    }
-
-    function tambah_menuutama()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_menu->menuutama_tambah();
-            redirect('administrator/menuutama');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_menu/view_menu_tambah');
-        }
-    }
-
-    function edit_menuutama()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_menu->menuutama_update();
-            redirect('administrator/menuutama');
-        } else {
-            $data['rows'] = $this->model_menu->menuutama_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_menu/view_menu_edit', $data);
-        }
-    }
-
-    function delete_menuutama()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_menu->menuutama_delete($id);
-        redirect('administrator/menuutama');
-    }
-
-    // Controller Modul Sub Menu
-
-    function submenu()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_menu->submenu();
-        $this->template->load('administrator/template', 'administrator/mod_submenu/view_submenu', $data);
-    }
-
-    function tambah_submenu()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_menu->submenu_tambah();
-            redirect('administrator/submenu');
-        } else {
-            $data['utama'] = $this->model_menu->cek_menuutama();
-            $data['submenu'] = $this->model_menu->cek_submenu();
-            $this->template->load('administrator/template', 'administrator/mod_submenu/view_submenu_tambah', $data);
-        }
-    }
-
-    function edit_submenu()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_menu->submenu_update();
-            redirect('administrator/submenu');
-        } else {
-            $data['rows'] = $this->model_menu->submenu_edit($id)->row_array();
-            $data['utama'] = $this->model_menu->cek_menuutama();
-            $data['submenu'] = $this->model_menu->cek_submenu();
-            $this->template->load('administrator/template', 'administrator/mod_submenu/view_submenu_edit', $data);
-        }
-    }
-
-    function delete_submenu()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_menu->submenu_delete($id);
-        redirect('administrator/submenu');
-    }
-
-
-    // Controller Modul Halaman Baru
-
-    function halamanbaru()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_halaman->halamanstatis();
-        $this->template->load('administrator/template', 'administrator/mod_halaman/view_halaman', $data);
-    }
-
-    function tambah_halamanbaru()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_halaman->halamanstatis_tambah();
-            redirect('administrator/halamanbaru');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_halaman/view_halaman_tambah');
-        }
-    }
-
-    function edit_halamanbaru()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_halaman->halamanstatis_update();
-            redirect('administrator/halamanbaru');
-        } else {
-            $data['rows'] = $this->model_halaman->halamanstatis_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_halaman/view_halaman_edit', $data);
-        }
-    }
-
-    function delete_halamanbaru()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_halaman->halamanstatis_delete($id);
-        redirect('administrator/halamanbaru');
-    }
-
-
-
-    // Controller Modul List Berita
-
-    function cepat_berita()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_berita->list_berita_cepat();
-            redirect('administrator/berita');
-        }
-    }
-
-    function berita()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_berita->list_berita();
-
-        $data['rss'] = $this->model_berita->list_berita_rss();
-        $data['iden'] = $this->db->query("SELECT * FROM identitas ORDER BY id_identitas DESC LIMIT 1")->row_array();
-        $this->load->view(template() . '/rss', $data);
-        $this->template->load('administrator/template', 'administrator/mod_berita/view_berita', $data);
-    }
-
-    function tambah_berita()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_berita->list_berita_tambah();
-            redirect('administrator/berita');
-        } else {
-            $data['tag'] = $this->model_berita->tag_berita();
-            $data['record'] = $this->model_berita->kategori_berita();
-            $data['users'] = $this->model_users->users();
-            $this->template->load('administrator/template', 'administrator/mod_berita/view_berita_tambah', $data);
-        }
-    }
-
-    function edit_berita()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_berita->list_berita_update();
-            redirect('administrator/berita');
-        } else {
-            $data['tag'] = $this->model_berita->tag_berita();
-            $data['record'] = $this->model_berita->kategori_berita();
-            $data['rows'] = $this->model_berita->list_berita_edit($id)->row_array();
-            $data['users'] = $this->model_users->users();
-            $this->template->load('administrator/template', 'administrator/mod_berita/view_berita_edit', $data);
-        }
-    }
-
-    function delete_berita()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_berita->list_berita_delete($id);
-        redirect('administrator/berita');
-    }
-
-
-    // Controller Modul Komentar Berita
-
-    function komentar()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_berita->komentar();
-        $this->template->load('administrator/template', 'administrator/mod_komentar/view_komentar', $data);
-    }
-
-    function edit_komentar()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_berita->komentar_update();
-            redirect('administrator/komentar');
-        } else {
-            $data['rows'] = $this->model_berita->komentar_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_komentar/view_komentar_edit', $data);
-        }
-    }
-
-    function delete_komentar()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_berita->komentar_delete($id);
-        redirect('administrator/komentar');
-    }
-
-
-    // Controller Modul Kategori Berita
-
-    function kategoriberita()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_berita->kategori_berita();
-        $this->template->load('administrator/template', 'administrator/mod_kategori/view_kategori', $data);
-    }
-
-    function tambah_kategoriberita()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_berita->kategori_berita_tambah();
-            redirect('administrator/kategoriberita');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_kategori/view_kategori_tambah');
-        }
-    }
-
-    function edit_kategoriberita()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_berita->kategori_berita_update();
-            redirect('administrator/kategoriberita');
-        } else {
-            $data['rows'] = $this->model_berita->kategori_berita_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_kategori/view_kategori_edit', $data);
-        }
-    }
-
-    function delete_kategoriberita()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_berita->kategori_berita_delete($id);
-        redirect('administrator/kategoriberita');
-    }
-
-
-    // Controller Modul Sensor Kata
-
-    function sensorkata()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_berita->sensorkata();
-        $this->template->load('administrator/template', 'administrator/mod_sensorkata/view_sensorkata', $data);
-    }
-
-    function tambah_sensorkata()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_berita->sensorkata_tambah();
-            redirect('administrator/sensorkata');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_sensorkata/view_sensorkata_tambah');
-        }
-    }
-
-    function edit_sensorkata()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_berita->sensorkata_update();
-            redirect('administrator/sensorkata');
-        } else {
-            $data['rows'] = $this->model_berita->sensorkata_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_sensorkata/view_sensorkata_edit', $data);
-        }
-    }
-
-    function delete_sensorkata()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_berita->sensorkata_delete($id);
-        redirect('administrator/sensorkata');
-    }
-
-
-    // Controller Modul Tag Berita
-
-    function tagberita()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_berita->tag_berita();
-        $this->template->load('administrator/template', 'administrator/mod_tag/view_tag', $data);
-    }
-
-    function tambah_tagberita()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_berita->tag_berita_tambah();
-            redirect('administrator/tagberita');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_tag/view_tag_tambah');
-        }
-    }
-
-    function edit_tagberita()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_berita->tag_berita_update();
-            redirect('administrator/tagberita');
-        } else {
-            $data['rows'] = $this->model_berita->tag_berita_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_tag/view_tag_edit', $data);
-        }
-    }
-
-    function delete_tagberita()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_berita->tag_berita_delete($id);
-        redirect('administrator/tagberita');
-    }
-
-
-
-    // Controller Modul Iklan Sidebar
-
-    function banner()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_iklan->banner();
-        $this->template->load('administrator/template', 'administrator/mod_banner/view_banner', $data);
-    }
-
-    function tambah_banner()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_iklan->banner_tambah();
-            redirect('administrator/banner');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_banner/view_banner_tambah');
-        }
-    }
-
-    function edit_banner()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_iklan->banner_update();
-            redirect('administrator/banner');
-        } else {
-            $data['rows'] = $this->model_iklan->banner_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_banner/view_banner_edit', $data);
-        }
-    }
-
-    function delete_banner()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_iklan->banner_delete($id);
-        redirect('administrator/banner');
-    }
-
-
-
-    // Controller Modul Template Website
-
-    function templatewebsite()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_template->template();
-        $this->template->load('administrator/template', 'administrator/mod_template/view_template', $data);
-    }
-
-    function tambah_templatewebsite()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_template->template_tambah();
-            redirect('administrator/templatewebsite');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_template/view_template_tambah');
-        }
-    }
-
-    function edit_templatewebsite()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_template->template_update();
-            redirect('administrator/templatewebsite');
-        } else {
-            $data['rows'] = $this->model_template->template_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_template/view_template_edit', $data);
-        }
-    }
-
-    function delete_templatewebsite()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_template->template_delete($id);
-        redirect('administrator/templatewebsite');
-    }
-
-
-
-    // Controller Modul Agenda
-
-    function agenda()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_agenda->agenda();
-        $this->template->load('administrator/template', 'administrator/mod_agenda/view_agenda', $data);
-    }
-
-    function tambah_agenda()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_agenda->agenda_tambah();
-            redirect('administrator/agenda');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_agenda/view_agenda_tambah');
-        }
-    }
-
-    function edit_agenda()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_agenda->agenda_update();
-            redirect('administrator/agenda');
-        } else {
-            $data['rows'] = $this->model_agenda->agenda_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_agenda/view_agenda_edit', $data);
-        }
-    }
-
-    function delete_agenda()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_agenda->agenda_delete($id);
-        redirect('administrator/agenda');
-    }
-
-
-
     // Controller Modul Pesan Masuk
 
     function pesanmasuk()
@@ -606,97 +146,37 @@ class Login extends CI_Controller
 
     // Controller Modul User
 
-    function manajemenuser()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_users->users();
-        $this->template->load('administrator/template', 'administrator/mod_users/view_users', $data);
-    }
-
-    function tambah_manajemenuser()
-    {
-        cek_session_admin();
-        $id = $this->session->username;
-        if (isset($_POST['submit'])) {
-            $this->model_users->users_tambah();
-            redirect('administrator/manajemenuser');
-        } else {
-            $data['mo'] = $this->model_modul->users_modul();
-            $data['rows'] = $this->model_users->users_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_users/view_users_tambah', $data);
-        }
-    }
-
     function edit_manajemenuser()
     {
         cek_session_admin();
-        $id = $this->uri->segment(3);
-        $idsession = $this->session->username;
-        if (isset($_POST['submit'])) {
-            $this->model_users->users_update();
-            $this->session->set_flashdata('status', 'Data profile berhasil diubah');
-            redirect('login/edit_manajemenuser/' . $idsession);
-        } else {
-            //cek id user / username are same
-            if ($id == $idsession) {
-                $data['mo'] = $this->model_modul->users_modul();
-                $data['rows'] = $this->model_users->users_edit($id)->row_array();
-                $this->template->load('login/template', 'login/mod_users/view_users_edit', $data);
+        if($this->session->level=='user')
+        {
+            $id = $this->uri->segment(3);
+            $idsession = $this->session->username;
+            if (isset($_POST['submit'])) {
+                $this->model_users->users_update();
+                $this->session->set_flashdata('status', 'Data profile berhasil diubah');
+                redirect('login/edit_manajemenuser/' . $idsession);
             } else {
-                redirect('login/home');
+                //cek id user / username are same
+                if ($id == $idsession) {
+                    $data['mo'] = $this->model_modul->users_modul();
+                    $data['rows'] = $this->model_users->users_edit($id)->row_array();
+                    $this->template->load('login/template', 'login/mod_users/view_users_edit', $data);
+                } else {
+                    redirect('login/home');
+                }
             }
         }
-    }
-
-    function delete_manajemenuser()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_users->users_delete($id);
-        redirect('administrator/manajemenuser');
-    }
-
-
-
-
-    // Controller Modul Modul
-    function manajemenmodul()
-    {
-        cek_session_admin();
-        $data['record'] = $this->model_modul->modul();
-        $this->template->load('administrator/template', 'administrator/mod_modul/view_modul', $data);
-    }
-
-    function tambah_manajemenmodul()
-    {
-        cek_session_admin();
-        if (isset($_POST['submit'])) {
-            $this->model_modul->modul_tambah();
-            redirect('administrator/manajemenmodul');
-        } else {
-            $this->template->load('administrator/template', 'administrator/mod_modul/view_modul_tambah');
+        else
+        {
+            redirect('administrator/home');
         }
+        
     }
 
-    function edit_manajemenmodul()
-    {
-        cek_session_admin();
-        $id = $this->uri->segment(3);
-        if (isset($_POST['submit'])) {
-            $this->model_modul->modul_update();
-            redirect('administrator/manajemenmodul');
-        } else {
-            $data['rows'] = $this->model_modul->modul_edit($id)->row_array();
-            $this->template->load('administrator/template', 'administrator/mod_modul/view_modul_edit', $data);
-        }
-    }
-
-    function delete_manajemenmodul()
-    {
-        $id = $this->uri->segment(3);
-        $this->model_modul->modul_delete($id);
-        redirect('administrator/manajemenmodul');
-    }
-
+    // Controller Modul Logout
+    
     function logout()
     {
         $this->session->sess_destroy();

@@ -21,11 +21,6 @@
 </head>
 
 <body class="hold-transition login-page">
-  <?php if ($this->session->flashdata('status')) : ?>
-    <div class="alert alert-success">
-      Hello, <?php $this->session->flashdata('status'); ?>
-    </div>
-  <?php endif; ?>
   <div class="login-box">
     <?php
     $status = $this->session->flashdata('status');

@@ -10,7 +10,7 @@
                 </div>
                 <div class="box-body">
                     <center>
-                        <a href="joblist_detail"><button class="btn btn-primary"><i class="fa fa-chevron-right"></i> Detail</button></a>
+                        <a href="joblist_detail/<?php echo $row['id_berita']; ?>"><button class="btn btn-primary"><i class="fa fa-chevron-right"></i> Detail</button></a>
                     </center>
                 </div>
             </div>

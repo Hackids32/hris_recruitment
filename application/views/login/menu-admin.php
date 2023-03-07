@@ -16,6 +16,7 @@
             <li class="header" style='color:#fff; text-transform:uppercase; border-bottom:2px solid #00c0ef'>MENU PENGGUNA</li>
             <li><a href="<?php echo base_url(); ?>login/home"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
             <li><a href="<?php echo base_url(); ?>login/edit_manajemenuser/<?php echo $this->session->username; ?>"><i class="fa fa-user"></i> <span>Edit Profile</span></a></li>
+            <li><a href="<?php echo base_url(); ?>login/joblist"><i class="fa fa-briefcase"></i> <span>Job List</span></a></li>
             <li><a href="<?php echo base_url(); ?>login/logout"><i class="fa fa-power-off"></i> <span>Logout</span></a></li>
           </ul>
         </section>

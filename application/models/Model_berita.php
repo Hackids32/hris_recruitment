@@ -47,6 +47,11 @@ class Model_berita extends CI_model
         return $this->db->query("SELECT a.*, b.nama_kategori FROM berita a LEFT JOIN kategori b ON a.id_kategori=b.id_kategori ORDER BY a.id_berita DESC");
     }
 
+    function joblist_detail($id)
+    {
+        return $this->db->query("SELECT * FROM berita where id_berita='$id'");
+    }
+
     function list_berita()
     {
         return $this->db->query("SELECT a.*, b.nama_kategori FROM berita a LEFT JOIN kategori b ON a.id_kategori=b.id_kategori ORDER BY a.id_berita DESC");

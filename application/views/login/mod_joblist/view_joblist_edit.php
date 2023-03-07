@@ -10,24 +10,24 @@ echo form_open_multipart('administrator/edit_job', $attributes);
 echo "<div class='col-md-12'>
                   <table class='table table-condensed table-bordered'>
                   <tbody>
-                    <input type='hidden' name='id' value='$rows[id_berita]'>
+                    <input type='hidden' name='id' value='$record[id_berita]'>
                     <input type='hidden' name='u' value='USR0000003'>
                     <input type='hidden' name='c' value='Y'>
-                    <tr><th width='120px' scope='row'>Judul</th>    <td><input type='text' class='form-control' name='a' value='$rows[judul]' required></td></tr>
+                    <tr><th width='120px' scope='row'>Judul</th>    <td><input type='text' class='form-control' name='a' value='$record[judul]' required></td></tr>
                     <tr><th scope='row'>Kategori</th>               <td><select name='b' class='form-control' required>
                                                                                 <option value='' selected>- Pilih Kategori -</option>";
 foreach ($record->result_array() as $row) {
-    if ($rows['id_kategori'] == $row['id_kategori']) {
+    if ($record['id_kategori'] == $row['id_kategori']) {
         echo "<option value='$row[id_kategori]' selected>$row[nama_kategori]</option>";
     } else {
         echo "<option value='$row[id_kategori]'>$row[nama_kategori]</option>";
     }
 }
 echo "</td></tr>
-                    <tr><th scope='row'>Isi Berita</th>             <td><textarea id='editor1' class='form-control' name='d' style='height:320px' required>$rows[isi_berita]</textarea></td></tr>
+                    <tr><th scope='row'>Isi Berita</th>             <td><textarea id='editor1' class='form-control' name='d' style='height:320px' required>$record[isi_berita]</textarea></td></tr>
                     <tr><th scope='row'>Ganti Gambar</th>                 <td><input type='file' class='form-control' name='e'>";
-if ($rows['gambar'] != '') {
-    echo "<i style='color:red'>Lihat Gambar Saat ini : </i><a target='_BLANK' href='" . base_url() . "asset/foto_berita/$rows[gambar]'>$rows[gambar]</a>";
+if ($record['gambar'] != '') {
+    echo "<i style='color:red'>Lihat Gambar Saat ini : </i><a target='_BLANK' href='" . base_url() . "asset/foto_berita/$record[gambar]'>$record[gambar]</a>";
 }
 echo "</td></tr>
                   </tbody>

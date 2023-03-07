@@ -35,7 +35,7 @@ echo "</td></tr>
                 </div>
               </div>
               <div class='box-footer'>
-                    <button type='submit' name='submit' class='btn btn-info'>Update</button>
+                    <button type='submit' name='submit' class='btn btn-primary'>Update</button>
                     <a href='" . base_url() . $this->uri->segment(1) . "/job'><button type='button' class='btn btn-default pull-right'>Cancel</button></a>
                     
                   </div>

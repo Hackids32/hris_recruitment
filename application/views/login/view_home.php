@@ -3,7 +3,7 @@
                 <div class="info-box">
                   <span class="info-box-icon bg-aqua"><i class="fa fa-book"></i></span>
                   <div class="info-box-content">
-                    <span class="info-box-text">Berita</span>
+                    <span class="info-box-text">Berita User</span>
                     <?php $jmla = $this->model_berita->list_berita()->num_rows(); ?>
                     <span class="info-box-number"><?php echo $jmla; ?></span>
                   </div><!-- /.info-box-content -->
