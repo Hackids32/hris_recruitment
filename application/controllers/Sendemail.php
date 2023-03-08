@@ -27,14 +27,14 @@ class Sendemail extends CI_Controller
         $mail->isSMTP();
         $mail->Host     = 'ntc.co.id'; //sesuaikan sesuai nama domain hosting/server yang digunakan
         $mail->SMTPAuth = true;
-        $mail->Username = 'it1@ntc.co.id'; // user email
-        $mail->Password = 'nTc@1337.'; // password email
+        $mail->Username = 'hris.noreply@ntc.co.id'; // user email
+        $mail->Password = 'Ntc7006.'; // password email
         $mail->SMTPSecure = 'ssl';
         $mail->Port     = 465;
 		$mail->SMTPDebug = 2;
 
         $mail->setFrom('hris.noreply@ntc.co.id', 'Admin HRIS'); // user email
-        $mail->addReplyTo('it1@ntc.co.id', 'IT Dept'); //user email
+        $mail->addReplyTo('hris.noreply@ntc.co.id', 'IT Dept'); //user email
 
         // Add a recipient
         $mail->addAddress('inside.man108@gmail.com'); //email tujuan pengiriman email

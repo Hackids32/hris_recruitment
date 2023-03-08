@@ -16,7 +16,7 @@ echo "<div class='col-md-12'>
                     <tr><th width='120px' scope='row'>Judul</th>    <td><input type='text' class='form-control' name='a' value='$record[judul]' required></td></tr>
                     <tr><th scope='row'>Kategori</th>               <td><select name='b' class='form-control' required>
                                                                                 <option value='' selected>- Pilih Kategori -</option>";
-foreach ($record->result_array() as $row) {
+foreach ($recordcat->result_array() as $row) {
     if ($record['id_kategori'] == $row['id_kategori']) {
         echo "<option value='$row[id_kategori]' selected>$row[nama_kategori]</option>";
     } else {

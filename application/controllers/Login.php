@@ -69,6 +69,7 @@ class Login extends CI_Controller
         cek_session_admin();
         $id = $this->uri->segment(3);
         $data['record'] = $this->model_berita->list_berita_edit($id)->row_array();
+        $data['recordcat'] = $this->model_berita->kategori_department();
         $this->template->load('login/template', 'login/mod_joblist/view_joblist_edit', $data);
     }
 
